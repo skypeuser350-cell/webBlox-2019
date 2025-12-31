@@ -4,53 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home - webBlox 2019</title>
-    <!-- 2019 Roblox-style Meta Tags -->
-    <meta name="description" content="webBlox 2019: A revival project for the 2019 Roblox experience.">
+    <link rel="stylesheet" href="fonts.googleapis.com">
     <style>
-        /* Basic 2019-style CSS */
-        body {
-            font-family: "Source Sans Pro", Arial, Helvetica, sans-serif;
-            background-color: #f2f4f5;
-            margin: 0;
-            color: #393b3d;
-        }
-        .header {
-            background-color: #ffffff;
-            height: 40px;
-            border-bottom: 1px solid #b8babd;
-            padding: 5px 20px;
-            display: flex;
-            align-items: center;
-        }
-        .logo {
-            font-weight: bold;
-            font-size: 20px;
-            color: #000;
-            text-decoration: none;
-        }
-        .main-container {
-            max-width: 1000px;
-            margin: 20px auto;
-            background: white;
-            padding: 20px;
-            border-radius: 3px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-        .game-card {
-            width: 150px;
-            display: inline-block;
-            margin: 10px;
-            text-align: center;
-        }
-        .play-button {
-            background-color: #00a2ff;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 3px;
-            cursor: pointer;
-            font-weight: bold;
-        }
+        body { font-family: "Source Sans Pro", Arial, Helvetica, sans-serif; background-color: #f2f4f5; margin: 0; color: #393b3d; }
+        .header { background-color: #ffffff; height: 40px; border-bottom: 1px solid #b8babd; padding: 5px 20px; display: flex; align-items: center; }
+        .logo { font-weight: bold; font-size: 20px; color: #000; text-decoration: none; }
+        .main-container { max-width: 1000px; margin: 20px auto; background: white; padding: 20px; border-radius: 3px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .game-card { width: 150px; display: inline-block; margin: 10px; text-align: center; }
+        .play-button { background-color: #00a2ff; color: white; border: none; padding: 10px 20px; border-radius: 3px; cursor: pointer; font-weight: bold; }
         .play-button:hover { background-color: #32b5ff; }
     </style>
 </head>
@@ -61,17 +22,36 @@
     </div>
 
     <div class="main-container">
-        <h1>Hello, [Username]!</h1>
+        <h1>Hello, Player!</h1>
         <div class="game-section">
             <h3>Recommended Games</h3>
             <div class="game-card">
                 <div style="width:150px; height:150px; background:#ddd;"></div>
                 <p>Sample Game</p>
-                <!-- This button would eventually use a custom URI to launch your 2019 client -->
-                <button class="play-button" onclick="alert('Client connection required!')">Play</button>
+                <!-- Updated button to launch the D: drive executable -->
+                <button class="play-button" onclick="launchGame(123456)">Play</button>
             </div>
         </div>
     </div>
+
+    <script>
+        /**
+         * Triggers the D:\RobloxPlayerLanucher.exe using the webblox protocol.
+         * @param {number} placeId - The ID of the game to join.
+         */
+        function launchGame(placeId) {
+            const launchTime = Date.now();
+            
+            // This 'webblox:' protocol must match exactly what you added to the registry.
+            // It will pass the entire string to your .exe as a command-line argument.
+            const launchString = `webblox:1+launchmode:play+gameinfo:USER_TICKET+launchtime:${launchTime}+placelauncherurl:yourdomain.com{placeId}`;
+
+            console.log("Launching local client from D: drive...");
+            
+            // This redirects the browser to the custom protocol, triggering your .exe
+            window.location.assign(launchString);
+        }
+    </script>
 
 </body>
 </html>
