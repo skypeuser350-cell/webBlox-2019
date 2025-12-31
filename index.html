@@ -1,126 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<title>BSTBlox 2019 Style - Refined</title>
+<meta charset="UTF-8">
+<title>BSTBlox 2019 - Fixed</title>
 <style>
-  body { font-family: Arial, sans-serif; margin: 0; background: #f0f4f8; }
-  /* Fixed Navbar */
-  #navbar {
-    display: none; background-color: #0a7dda; color: white;
-    padding: 10px 20px; font-weight: bold; position: sticky; top: 0; z-index: 1000;
-  }
-  #navbar ul { margin: 0; padding: 0; list-style: none; display: inline-block; }
-  #navbar ul li { display: inline-block; margin-right: 15px; cursor: pointer; transition: 0.2s; }
-  #navbar ul li:hover { color: #c2e1ff; text-decoration: underline; }
-  #logoutBtn { float: right; background-color: #095c9d; border: none; color: white; padding: 6px 12px; cursor: pointer; border-radius: 3px; }
-  
-  /* Modernized View Containers */
-  .view { max-width: 800px; margin: 40px auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: none; }
-  .view.active { display: block; }
-  input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
-  .actionBtn { width: 100%; background-color: #0a7dda; color: white; border: none; padding: 14px; cursor: pointer; border-radius: 4px; font-weight: bold; }
-  .error { color: #d93025; font-size: 14px; margin-top: 5px; height: 20px; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background: #f0f2f5; }
+    #navbar { display: none; background: #0074bd; color: white; padding: 12px 5%; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    #navbar ul { display: inline; list-style: none; padding: 0; }
+    #navbar ul li { display: inline; margin-right: 15px; cursor: pointer; opacity: 0.9; }
+    #navbar ul li:hover { opacity: 1; text-decoration: underline; }
+    .view { max-width: 500px; margin: 60px auto; background: white; padding: 40px; border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); display: none; }
+    .view.active { display: block; }
+    input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
+    button.main-btn { width: 100%; padding: 12px; background: #0074bd; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; font-weight: bold; }
+    button.main-btn:hover { background: #005a92; }
+    .error { color: #d93025; font-size: 14px; margin-top: 5px; min-height: 18px; }
+    .link-text { color: #0074bd; cursor: pointer; text-align: center; display: block; margin-top: 15px; }
 </style>
 </head>
 <body>
 
 <div id="navbar">
-  <span id="welcomeUser"></span>
-  <ul id="navLinks">
-    <li onclick="showPage('home')">Home</li>
-    <li onclick="showPage('games')">Games</li>
-    <li onclick="showPage('avatar')">Avatar</li>
-    <li onclick="showPage('catalog')">Catalog</li>
-  </ul>
-  <button id="logoutBtn" onclick="logout()">Logout</button>
+    <span id="userTag"></span>
+    <ul>
+        <li onclick="showPage('home')">Home</li>
+        <li onclick="showPage('games')">Games</li>
+        <li onclick="showPage('avatar')">Avatar</li>
+    </ul>
+    <button onclick="logout()" style="float:right; background:rgba(0,0,0,0.2); border:none; color:white; padding: 5px 10px; cursor:pointer;">Logout</button>
 </div>
 
-<!-- Views -->
 <div id="loginView" class="view">
-  <h2>Login to BSTBlox</h2>
-  <input id="loginUser" type="text" placeholder="Username" autocomplete="username" />
-  <input id="loginPass" type="password" placeholder="Password" autocomplete="current-password" />
-  <button class="actionBtn" onclick="login()">Log In</button>
-  <p style="text-align:center; color:#0a7dda; cursor:pointer;" onclick="showView('signupView')">New here? Create account</p>
-  <div id="loginError" class="error"></div>
+    <h2 style="margin-top:0">Login</h2>
+    <input id="l_user" type="text" placeholder="Username">
+    <input id="l_pass" type="password" placeholder="Password">
+    <button class="main-btn" onclick="handleLogin()">Log In</button>
+    <div id="l_err" class="error"></div>
+    <span class="link-text" onclick="switchView('signupView')">New here? Sign Up</span>
 </div>
 
 <div id="signupView" class="view">
-  <h2>Create Account</h2>
-  <input id="signupUser" type="text" placeholder="Choose Username" />
-  <input id="signupPass" type="password" placeholder="Choose Password" />
-  <button class="actionBtn" onclick="signup()">Sign Up</button>
-  <p style="text-align:center; color:#0a7dda; cursor:pointer;" onclick="showView('loginView')">Back to Login</p>
-  <div id="signupError" class="error"></div>
+    <h2 style="margin-top:0">Create Account</h2>
+    <input id="s_user" type="text" placeholder="Username">
+    <input id="s_pass" type="password" placeholder="Password">
+    <button class="main-btn" onclick="handleSignup()">Sign Up</button>
+    <div id="s_err" class="error"></div>
+    <span class="link-text" onclick="switchView('loginView')">Back to Login</span>
 </div>
 
-<div id="home" class="view"><h1>Dashboard</h1><p>Welcome back! Check out latest updates from 2025.</p></div>
-<div id="games" class="view"><h1>Games</h1><p>Explore community creations.</p></div>
-<div id="avatar" class="view"><h1>Avatar Editor</h1><p>Customize your look.</p></div>
-<div id="catalog" class="view"><h1>Catalog</h1><p>Shop for new items.</p></div>
+<div id="home" class="view"><h1>Welcome Home!</h1><p>You are successfully logged into WebBlox.</p></div>
+<div id="games" class="view"><h1>Games</h1><p>Browse the latest 2025 community games.</p></div>
+<div id="avatar" class="view"><h1>Avatar</h1><p>Change your outfit here.</p></div>
 
 <script>
-  // Robust LocalStorage Management
-  const storage = {
-    getUsers: () => JSON.parse(localStorage.getItem('bstblox_users') || '{}'),
-    saveUsers: (u) => localStorage.setItem('bstblox_users', JSON.stringify(u)),
-    setCurrent: (n) => localStorage.setItem('bstblox_session', n),
-    getCurrent: () => localStorage.getItem('bstblox_session')
-  };
-
-  function showView(id) {
-    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-    const target = document.getElementById(id);
-    if(target) target.classList.add('active');
-    document.querySelectorAll('.error').forEach(e => e.textContent = '');
-  }
-
-  function signup() {
-    const u = document.getElementById('signupUser').value.trim();
-    const p = document.getElementById('signupPass').value;
-    const err = document.getElementById('signupError');
-
-    if (u.length < 3) return err.textContent = 'Username too short.';
-    const users = storage.getUsers();
-    if (users[u]) return err.textContent = 'User already exists.';
-
-    users[u] = p;
-    storage.saveUsers(users);
-    loginSuccess(u);
-  }
-
-  function login() {
-    const u = document.getElementById('loginUser').value.trim();
-    const p = document.getElementById('loginPass').value;
-    const users = storage.getUsers();
-
-    if (users[u] && users[u] === p) {
-      loginSuccess(u);
-    } else {
-      document.getElementById('loginError').textContent = 'Invalid credentials.';
+    // Session-only fallback if localStorage is blocked by browser security
+    let memoryUsers = {}; 
+    
+    function getDB() {
+        try {
+            const data = localStorage.getItem('webblox_db');
+            return data ? JSON.parse(data) : memoryUsers;
+        } catch(e) { return memoryUsers; }
     }
-  }
 
-  function loginSuccess(username) {
-    storage.setCurrent(username);
-    document.getElementById('welcomeUser').textContent = `Hello, ${username} | `;
-    document.getElementById('navbar').style.display = 'block';
-    showView('home');
-  }
+    function saveDB(db) {
+        try {
+            localStorage.setItem('webblox_db', JSON.stringify(db));
+        } catch(e) { memoryUsers = db; }
+    }
 
-  function logout() {
-    localStorage.removeItem('bstblox_session');
-    document.getElementById('navbar').style.display = 'none';
-    showView('loginView');
-  }
+    function switchView(id) {
+        document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        document.querySelectorAll('.error').forEach(e => e.textContent = '');
+    }
 
-  function showPage(page) { showView(page); }
+    function handleSignup() {
+        const u = document.getElementById('s_user').value.trim();
+        const p = document.getElementById('s_pass').value;
+        const err = document.getElementById('s_err');
+        if(!u || !p) return err.textContent = "Fill all fields";
+        
+        let db = getDB();
+        if(db[u]) return err.textContent = "User exists";
+        
+        db[u] = p;
+        saveDB(db);
+        enterSite(u);
+    }
 
-  window.onload = () => {
-    const session = storage.getCurrent();
-    session ? loginSuccess(session) : showView('loginView');
-  };
+    function handleLogin() {
+        const u = document.getElementById('l_user').value.trim();
+        const p = document.getElementById('l_pass').value;
+        const db = getDB();
+        
+        if(db[u] && db[u] === p) {
+            enterSite(u);
+        } else {
+            document.getElementById('l_err').textContent = "Wrong username or password";
+        }
+    }
+
+    function enterSite(name) {
+        sessionStorage.setItem('active_user', name);
+        document.getElementById('userTag').textContent = "Logged in as: " + name + " | ";
+        document.getElementById('navbar').style.display = 'block';
+        switchView('home');
+    }
+
+    function logout() {
+        sessionStorage.removeItem('active_user');
+        document.getElementById('navbar').style.display = 'none';
+        switchView('loginView');
+    }
+
+    function showPage(p) { switchView(p); }
+
+    window.onload = () => {
+        const user = sessionStorage.getItem('active_user');
+        user ? enterSite(user) : switchView('loginView');
+    };
 </script>
 </body>
 </html>
