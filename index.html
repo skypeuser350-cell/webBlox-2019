@@ -2,268 +2,125 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<title>BSTBlox 2019 Style</title>
+<title>BSTBlox 2019 Style - Refined</title>
 <style>
-  body {
-    font-family: Arial, sans-serif;
-    margin: 0; background: #f0f4f8;
-  }
-  /* Navbar */
+  body { font-family: Arial, sans-serif; margin: 0; background: #f0f4f8; }
+  /* Fixed Navbar */
   #navbar {
-    display: none;
-    background-color: #0a7dda;
-    color: white;
-    padding: 10px 20px;
-    font-weight: bold;
+    display: none; background-color: #0a7dda; color: white;
+    padding: 10px 20px; font-weight: bold; position: sticky; top: 0; z-index: 1000;
   }
-  #navbar span#welcomeUser {
-    margin-right: 20px;
-  }
-  #navbar button {
-    float: right;
-    background-color: #095c9d;
-    border: none;
-    color: white;
-    padding: 6px 12px;
-    cursor: pointer;
-    font-weight: bold;
-    border-radius: 3px;
-  }
-  #navbar button:hover {
-    background-color: #074a7a;
-  }
-  #navbar ul {
-    margin: 0; padding: 0;
-    list-style: none;
-    display: inline-block;
-  }
-  #navbar ul li {
-    display: inline-block;
-    margin-right: 15px;
-    cursor: pointer;
-  }
-  #navbar ul li:hover {
-    text-decoration: underline;
-  }
-
-  /* Views */
-  .view {
-    max-width: 700px;
-    margin: 40px auto;
-    background: white;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px #ccc;
-    display: none;
-  }
-  .view.active {
-    display: block;
-  }
-
-  /* Forms */
-  input[type=text], input[type=password] {
-    width: 100%; padding: 10px; margin: 10px 0 20px 0; box-sizing: border-box; font-size: 16px;
-  }
-  button.actionBtn {
-    width: 100%; background-color: #0a7dda; color: white; border: none; padding: 12px; cursor: pointer; font-size: 18px;
-    border-radius: 4px;
-  }
-  button.actionBtn:hover {
-    background-color: #095c9d;
-  }
-  p.link {
-    text-align: center;
-    color: #0a7dda;
-    cursor: pointer;
-    margin-top: 15px;
-    user-select: none;
-  }
-  p.error {
-    color: red;
-    min-height: 20px;
-  }
+  #navbar ul { margin: 0; padding: 0; list-style: none; display: inline-block; }
+  #navbar ul li { display: inline-block; margin-right: 15px; cursor: pointer; transition: 0.2s; }
+  #navbar ul li:hover { color: #c2e1ff; text-decoration: underline; }
+  #logoutBtn { float: right; background-color: #095c9d; border: none; color: white; padding: 6px 12px; cursor: pointer; border-radius: 3px; }
+  
+  /* Modernized View Containers */
+  .view { max-width: 800px; margin: 40px auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: none; }
+  .view.active { display: block; }
+  input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+  .actionBtn { width: 100%; background-color: #0a7dda; color: white; border: none; padding: 14px; cursor: pointer; border-radius: 4px; font-weight: bold; }
+  .error { color: #d93025; font-size: 14px; margin-top: 5px; height: 20px; }
 </style>
 </head>
 <body>
 
-<!-- Navbar -->
 <div id="navbar">
   <span id="welcomeUser"></span>
-  <ul>
+  <ul id="navLinks">
     <li onclick="showPage('home')">Home</li>
     <li onclick="showPage('games')">Games</li>
     <li onclick="showPage('avatar')">Avatar</li>
     <li onclick="showPage('catalog')">Catalog</li>
-    <li onclick="showPage('create')">Create</li>
-    <li onclick="showPage('messages')">Messages</li>
-    <li onclick="showPage('profile')">Profile</li>
-    <li onclick="showPage('users')">Users</li>
-    <li onclick="showPage('settings')">Settings</li>
   </ul>
-  <button onclick="logout()">Logout</button>
+  <button id="logoutBtn" onclick="logout()">Logout</button>
 </div>
 
-<!-- Login View -->
-<div id="loginView" class="view active">
-  <h2>Login</h2>
-  <input id="loginUser" placeholder="Username" />
-  <input id="loginPass" type="password" placeholder="Password" />
+<!-- Views -->
+<div id="loginView" class="view">
+  <h2>Login to BSTBlox</h2>
+  <input id="loginUser" type="text" placeholder="Username" autocomplete="username" />
+  <input id="loginPass" type="password" placeholder="Password" autocomplete="current-password" />
   <button class="actionBtn" onclick="login()">Log In</button>
-  <p class="link" onclick="showView('signupView')">Don't have an account? Sign up</p>
-  <p id="loginError" class="error"></p>
+  <p style="text-align:center; color:#0a7dda; cursor:pointer;" onclick="showView('signupView')">New here? Create account</p>
+  <div id="loginError" class="error"></div>
 </div>
 
-<!-- Signup View -->
 <div id="signupView" class="view">
-  <h2>Sign Up</h2>
-  <input id="signupUser" placeholder="Username" />
-  <input id="signupPass" type="password" placeholder="Password" />
+  <h2>Create Account</h2>
+  <input id="signupUser" type="text" placeholder="Choose Username" />
+  <input id="signupPass" type="password" placeholder="Choose Password" />
   <button class="actionBtn" onclick="signup()">Sign Up</button>
-  <p class="link" onclick="showView('loginView')">Already have an account? Log in</p>
-  <p id="signupError" class="error"></p>
+  <p style="text-align:center; color:#0a7dda; cursor:pointer;" onclick="showView('loginView')">Back to Login</p>
+  <div id="signupError" class="error"></div>
 </div>
 
-<!-- Home View -->
-<div id="home" class="view">
-  <h1>Welcome to BSTBlox!</h1>
-  <p>This is the home page. Enjoy your stay!</p>
-</div>
-
-<!-- Games View -->
-<div id="games" class="view">
-  <h1>Games</h1>
-  <p>Here you can browse classic and new games.</p>
-  <ul>
-    <li><b>Classic Tycoon</b> - <button onclick="alert('Launching Classic Tycoon')">Play</button></li>
-    <li><b>Brick Battle</b> - <button onclick="alert('Launching Brick Battle')">Play</button></li>
-    <li><b>Crossroads</b> - <button onclick="alert('Launching Crossroads')">Play</button></li>
-  </ul>
-</div>
-
-<!-- Avatar View -->
-<div id="avatar" class="view">
-  <h1>Avatar</h1>
-  <p>Customize your noob avatar here!</p>
-  <img src="https://www.roblox.com/headshot-thumbnail/image?userId=1&width=150&height=150&format=png" alt="Noob Avatar" />
-</div>
-
-<!-- Catalog View -->
-<div id="catalog" class="view">
-  <h1>Catalog</h1>
-  <p>Browse items to customize your avatar.</p>
-</div>
-
-<!-- Create View -->
-<div id="create" class="view">
-  <h1>Create</h1>
-  <p>Create your own games and items.</p>
-</div>
-
-<!-- Messages View -->
-<div id="messages" class="view">
-  <h1>Messages</h1>
-  <p>Your messages will show here.</p>
-</div>
-
-<!-- Profile View -->
-<div id="profile" class="view">
-  <h1>Profile</h1>
-  <p>View and edit your profile.</p>
-</div>
-
-<!-- Users View -->
-<div id="users" class="view">
-  <h1>Users</h1>
-  <p>See the BSTBlox community.</p>
-</div>
-
-<!-- Settings View -->
-<div id="settings" class="view">
-  <h1>Settings</h1>
-  <p>Change your settings here.</p>
-</div>
+<div id="home" class="view"><h1>Dashboard</h1><p>Welcome back! Check out latest updates from 2025.</p></div>
+<div id="games" class="view"><h1>Games</h1><p>Explore community creations.</p></div>
+<div id="avatar" class="view"><h1>Avatar Editor</h1><p>Customize your look.</p></div>
+<div id="catalog" class="view"><h1>Catalog</h1><p>Shop for new items.</p></div>
 
 <script>
-  function getUsers() {
-    const users = localStorage.getItem('bstbloxUsers');
-    return users ? JSON.parse(users) : {};
-  }
-  function saveUsers(users) {
-    localStorage.setItem('bstbloxUsers', JSON.stringify(users));
-  }
-  function showView(viewId) {
+  // Robust LocalStorage Management
+  const storage = {
+    getUsers: () => JSON.parse(localStorage.getItem('bstblox_users') || '{}'),
+    saveUsers: (u) => localStorage.setItem('bstblox_users', JSON.stringify(u)),
+    setCurrent: (n) => localStorage.setItem('bstblox_session', n),
+    getCurrent: () => localStorage.getItem('bstblox_session')
+  };
+
+  function showView(id) {
     document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-    document.getElementById(viewId).classList.add('active');
-    clearErrors();
+    const target = document.getElementById(id);
+    if(target) target.classList.add('active');
+    document.querySelectorAll('.error').forEach(e => e.textContent = '');
   }
-  function clearErrors() {
-    document.getElementById('loginError').textContent = '';
-    document.getElementById('signupError').textContent = '';
-  }
+
   function signup() {
-    const username = document.getElementById('signupUser').value.trim();
-    const password = document.getElementById('signupPass').value;
-    const errorElem = document.getElementById('signupError');
-    if (!username || !password) {
-      errorElem.textContent = 'Please enter username and password.';
-      return;
-    }
-    const users = getUsers();
-    if (users[username]) {
-      errorElem.textContent = 'Username already exists.';
-      return;
-    }
-    users[username] = password;
-    saveUsers(users);
-    localStorage.setItem('bstbloxUser', username);
-    loginSuccess(username);
+    const u = document.getElementById('signupUser').value.trim();
+    const p = document.getElementById('signupPass').value;
+    const err = document.getElementById('signupError');
+
+    if (u.length < 3) return err.textContent = 'Username too short.';
+    const users = storage.getUsers();
+    if (users[u]) return err.textContent = 'User already exists.';
+
+    users[u] = p;
+    storage.saveUsers(users);
+    loginSuccess(u);
   }
+
   function login() {
-    const username = document.getElementById('loginUser').value.trim();
-    const password = document.getElementById('loginPass').value;
-    const errorElem = document.getElementById('loginError');
-    if (!username || !password) {
-      errorElem.textContent = 'Please enter username and password.';
-      return;
+    const u = document.getElementById('loginUser').value.trim();
+    const p = document.getElementById('loginPass').value;
+    const users = storage.getUsers();
+
+    if (users[u] && users[u] === p) {
+      loginSuccess(u);
+    } else {
+      document.getElementById('loginError').textContent = 'Invalid credentials.';
     }
-    const users = getUsers();
-    if (!users[username]) {
-      errorElem.textContent = 'User does not exist.';
-      return;
-    }
-    if (users[username] !== password) {
-      errorElem.textContent = 'Incorrect password.';
-      return;
-    }
-    localStorage.setItem('bstbloxUser', username);
-    loginSuccess(username);
   }
+
   function loginSuccess(username) {
-    document.getElementById('welcomeUser').textContent = `Welcome, ${username}`;
+    storage.setCurrent(username);
+    document.getElementById('welcomeUser').textContent = `Hello, ${username} | `;
     document.getElementById('navbar').style.display = 'block';
     showView('home');
   }
+
   function logout() {
-    localStorage.removeItem('bstbloxUser');
+    localStorage.removeItem('bstblox_session');
     document.getElementById('navbar').style.display = 'none';
-    document.getElementById('loginUser').value = '';
-    document.getElementById('loginPass').value = '';
     showView('loginView');
   }
-  function showPage(page) {
-    showView(page);
-  }
-  window.onload = () => {
-    const user = localStorage.getItem('bstbloxUser');
-    if (user) {
-      loginSuccess(user);
-    } else {
-      showView('loginView');
-    }
-  }
-</script>
 
+  function showPage(page) { showView(page); }
+
+  window.onload = () => {
+    const session = storage.getCurrent();
+    session ? loginSuccess(session) : showView('loginView');
+  };
+</script>
 </body>
 </html>
-
-
