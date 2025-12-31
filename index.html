@@ -28,30 +28,23 @@
             <div class="game-card">
                 <div style="width:150px; height:150px; background:#ddd;"></div>
                 <p>Sample Game</p>
-                <!-- Updated button to launch the D: drive executable -->
-                <button class="play-button" onclick="launchGame(123456)">Play</button>
+                <!-- FIXED: Removed alert() and replaced it with launchGame() -->
+                <button class="play-button" onclick="launchGame(1818)">Play</button>
             </div>
         </div>
     </div>
 
     <script>
-        /**
-         * Triggers the D:\RobloxPlayerLanucher.exe using the webblox protocol.
-         * @param {number} placeId - The ID of the game to join.
-         */
         function launchGame(placeId) {
-            const launchTime = Date.now();
+            // This 'webblox:' protocol triggers your D:\RobloxPlayerLanucher.exe
+            const launchString = `webblox:1+launchmode:play+gameinfo:TICKET+placelauncherurl:yourdomain.com{placeId}`;
             
-            // This 'webblox:' protocol must match exactly what you added to the registry.
-            // It will pass the entire string to your .exe as a command-line argument.
-            const launchString = `webblox:1+launchmode:play+gameinfo:USER_TICKET+launchtime:${launchTime}+placelauncherurl:yourdomain.com{placeId}`;
-
-            console.log("Launching local client from D: drive...");
-            
-            // This redirects the browser to the custom protocol, triggering your .exe
+            console.log("Launching from D: drive...");
             window.location.assign(launchString);
         }
     </script>
 
 </body>
 </html>
+
+
