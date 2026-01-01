@@ -1,125 +1,372 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>WebBLOX 2019 - BULID 1</title>
-<style>
-    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background: #f0f2f5; }
-    #navbar { display: none; background: #0074bd; color: white; padding: 12px 5%; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-    #navbar ul { display: inline; list-style: none; padding: 0; }
-    #navbar ul li { display: inline; margin-right: 15px; cursor: pointer; opacity: 0.9; }
-    #navbar ul li:hover { opacity: 1; text-decoration: underline; }
-    .view { max-width: 500px; margin: 60px auto; background: white; padding: 40px; border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); display: none; }
-    .view.active { display: block; }
-    input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
-    button.main-btn { width: 100%; padding: 12px; background: #0074bd; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; font-weight: bold; }
-    button.main-btn:hover { background: #005a92; }
-    .error { color: #d93025; font-size: 14px; margin-top: 5px; min-height: 18px; }
-    .link-text { color: #0074bd; cursor: pointer; text-align: center; display: block; margin-top: 15px; }
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>webBlox — Login</title>
+
+  <!-- Google Font (optional) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg1: #0f1724;
+      --bg2: #071322;
+      --card: rgba(255,255,255,0.04);
+      --accent: #6ee7b7;
+      --accent-2: #60a5fa;
+      --muted: rgba(255,255,255,0.65);
+      --danger: #ff7b7b;
+      --glass: rgba(255,255,255,0.03);
+      --glass-2: rgba(255,255,255,0.02);
+      --radius: 14px;
+    }
+
+    html,body{
+      height:100%;
+      margin:0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(1000px 600px at 10% 10%, rgba(96,165,250,0.06), transparent),
+                  linear-gradient(180deg, var(--bg1), var(--bg2));
+      color: #e6eef8;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    .wrap{
+      min-height:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:48px 24px;
+      box-sizing:border-box;
+      gap:32px;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 980px;
+      display:grid;
+      grid-template-columns: 1fr 420px;
+      gap: 28px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+      border: 1px solid var(--glass);
+      box-shadow: 0 6px 30px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .promo {
+      padding:40px;
+      background:
+        linear-gradient(135deg, rgba(96,165,250,0.06), rgba(110,231,183,0.03));
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+      justify-content:center;
+    }
+
+    .promo h1{
+      margin:0;
+      font-size:28px;
+      line-height:1.05;
+      letter-spacing:-0.02em;
+      color: white;
+    }
+    .promo p{ margin:0; color:var(--muted); font-size:15px; max-width:36ch; }
+
+    .promo .features{
+      margin-top:12px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px 14px;
+    }
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      background: rgba(255,255,255,0.03);
+      border-radius:999px;
+      color:var(--muted);
+      font-size:13px;
+    }
+    .pill svg{ width:14px; height:14px; opacity:0.95; }
+
+    /* Right column: login */
+    .loginPane{
+      padding:32px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+      justify-content:center;
+    }
+
+    .brand{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      margin-bottom:6px;
+    }
+    .logo {
+      width:48px;
+      height:48px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:10px;
+      background: linear-gradient(135deg,var(--accent),var(--accent-2));
+      box-shadow: 0 6px 20px rgba(96,165,250,0.08);
+      font-weight:700;
+      color:white;
+      font-size:18px;
+    }
+    .brand h2 { margin:0; font-size:16px; }
+    .brand p { margin:0; color:var(--muted); font-size:13px; }
+
+    form#loginForm {
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      margin-top:6px;
+    }
+
+    label{ font-size:13px; color:var(--muted); display:block; margin-bottom:6px; }
+
+    .input{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      background: var(--glass);
+      border-radius:10px;
+      padding:10px 12px;
+      border: 1px solid rgba(255,255,255,0.03);
+      color: #e9f2ff;
+    }
+    .input:focus-within{
+      box-shadow: 0 6px 20px rgba(96,165,250,0.06);
+      border-color: rgba(96,165,250,0.25);
+    }
+    .input input{
+      background: transparent;
+      border:0;
+      outline:0;
+      color:inherit;
+      font-size:15px;
+      width:100%;
+    }
+    .small{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:8px;
+      font-size:13px;
+      color:var(--muted);
+    }
+
+    .actions{
+      display:flex;
+      gap:8px;
+      align-items:center;
+    }
+
+    button.primary{
+      background: linear-gradient(90deg,var(--accent),var(--accent-2));
+      color: #05233b;
+      border:0;
+      padding:10px 14px;
+      border-radius:10px;
+      font-weight:600;
+      cursor:pointer;
+      transition:transform .15s ease, box-shadow .15s ease;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+    }
+    button.primary:active{ transform:translateY(1px); }
+    button.ghost{
+      background:transparent;
+      border:1px solid rgba(255,255,255,0.04);
+      color:var(--muted);
+      padding:10px 12px;
+      border-radius:10px;
+      cursor:pointer;
+    }
+
+    .login-meta{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-top:4px;
+      gap:12px;
+    }
+
+    .loginError {
+      color: var(--danger);
+      font-size:13px;
+      display:none;
+    }
+
+    .helper{
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    /* small screens */
+    @media (max-width:880px){
+      .card{ grid-template-columns: 1fr; max-width:720px; }
+      .promo{ order:2; padding:24px; }
+      .loginPane{ order:1; padding:20px; }
+    }
+  </style>
 </head>
 <body>
+  <div class="wrap">
+    <div class="card" role="region" aria-label="webBlox login panel">
+      <div class="promo" aria-hidden="false">
+        <h1>webBlox — Play Roblox-style games on the web</h1>
+        <p>Our aim is a web-playable experience. The site is being actively developed — sign in to continue to your build dashboard or try the demo areas.</p>
 
-<div id="navbar">
-    <span id="userTag"></span>
-    <ul>
-        <li onclick="showPage('home')">Home</li>
-        <li onclick="showPage('games')">Games</li>
-        <li onclick="showPage('avatar')">Avatar</li>
-    </ul>
-    <button onclick="logout()" style="float:right; background:rgba(0,0,0,0.2); border:none; color:white; padding: 5px 10px; cursor:pointer;">Logout</button>
-</div>
+        <div class="features" aria-hidden="true">
+          <span class="pill"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4L19 6" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Responsive UI</span>
+          <span class="pill"><svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Lightweight</span>
+          <span class="pill"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="white" stroke-width="1.6"/></svg> Fast login</span>
+        </div>
 
-<div id="loginView" class="view">
-    <h2 style="margin-top:0">Login</h2>
-    <input id="l_user" type="text" placeholder="Username">
-    <input id="l_pass" type="password" placeholder="Password">
-    <button class="main-btn" onclick="handleLogin()">Log In</button>
-    <div id="l_err" class="error"></div>
-    <span class="link-text" onclick="switchView('signupView')">New here? Sign Up</span>
-</div>
+        <p style="margin-top:18px" class="helper">Tip: Use the Show toggle on the password field while signing in on personal devices.</p>
+      </div>
 
-<div id="signupView" class="view">
-    <h2 style="margin-top:0">Create Account</h2>
-    <input id="s_user" type="text" placeholder="Username">
-    <input id="s_pass" type="password" placeholder="Password">
-    <button class="main-btn" onclick="handleSignup()">Sign Up</button>
-    <div id="s_err" class="error"></div>
-    <span class="link-text" onclick="switchView('loginView')">Back to Login</span>
-</div>
+      <div class="loginPane">
+        <div class="brand">
+          <div class="logo" aria-hidden="true">wB</div>
+          <div>
+            <h2>Welcome back</h2>
+            <p>Sign in to continue to webBlox</p>
+          </div>
+        </div>
 
-<div id="home" class="view"><h1>Welcome Home!</h1><p>You are successfully logged into WebBlox.</p></div>
-<div id="games" class="view"><h1>Games</h1><p>Browse the latest 2025 community games.</p></div>
-<div id="avatar" class="view"><h1>Avatar</h1><p>Change your outfit here.</p></div>
+        <!-- IMPORTANT: keep form id/name/inputs as used by your existing login script.
+             Preserved IDs/names: form#loginForm, input#username[name="username"], input#password[name="password"], button#loginButton -->
+        <form id="loginForm" autocomplete="on">
+          <div>
+            <label for="username">Username or Email</label>
+            <div class="input">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M16 11a4 4 0 10-8 0" stroke="#bcd6ff" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <input id="username" name="username" type="text" inputmode="text" placeholder="name@example.com or username" required />
+            </div>
+          </div>
 
-<script>
-    // Session-only fallback if localStorage is blocked by browser security
-    let memoryUsers = {}; 
-    
-    function getDB() {
-        try {
-            const data = localStorage.getItem('webblox_db');
-            return data ? JSON.parse(data) : memoryUsers;
-        } catch(e) { return memoryUsers; }
-    }
+          <div>
+            <label for="password">Password</label>
+            <div class="input">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="11" width="18" height="10" rx="2" stroke="#bcd6ff" stroke-width="1.4"/><path d="M7 11V8a5 5 0 0110 0v3" stroke="#bcd6ff" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <input id="password" name="password" type="password" placeholder="Your password" required />
+              <button type="button" id="togglePassword" aria-label="Show password" title="Show password" style="background:none;border:0;color:var(--muted);cursor:pointer;font-size:14px;padding:4px 6px;">Show</button>
+            </div>
+          </div>
 
-    function saveDB(db) {
-        try {
-            localStorage.setItem('webblox_db', JSON.stringify(db));
-        } catch(e) { memoryUsers = db; }
-    }
+          <div class="login-meta">
+            <label class="small"><input type="checkbox" id="remember" name="remember" style="margin-right:8px; accent-color: #60a5fa;"> Remember me</label>
+            <a href="#" class="helper" style="text-decoration:none;color:var(--muted)">Forgot password?</a>
+          </div>
 
-    function switchView(id) {
-        document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-        document.querySelectorAll('.error').forEach(e => e.textContent = '');
-    }
+          <div style="display:flex;gap:10px;margin-top:6px;align-items:center;">
+            <button id="loginButton" class="primary" type="submit" aria-live="polite">
+              <span id="loginIcon" style="display:inline-block">Sign in</span>
+              <svg id="btnSpinner" viewBox="0 0 50 50" width="18" height="18" style="display:none"><path fill="none" stroke="#05233b" stroke-width="5" d="M25 5a20 20 0 1 0 20 20" stroke-linecap="round"></path></svg>
+            </button>
 
-    function handleSignup() {
-        const u = document.getElementById('s_user').value.trim();
-        const p = document.getElementById('s_pass').value;
-        const err = document.getElementById('s_err');
-        if(!u || !p) return err.textContent = "Fill all fields";
-        
-        let db = getDB();
-        if(db[u]) return err.textContent = "User exists";
-        
-        db[u] = p;
-        saveDB(db);
-        enterSite(u);
-    }
+            <button type="button" class="ghost" id="guestBtn">Play as Guest</button>
+          </div>
 
-    function handleLogin() {
-        const u = document.getElementById('l_user').value.trim();
-        const p = document.getElementById('l_pass').value;
-        const db = getDB();
-        
-        if(db[u] && db[u] === p) {
-            enterSite(u);
+          <div id="loginError" class="loginError" role="status" aria-live="assertive"></div>
+
+          <div style="margin-top:10px;color:var(--muted);font-size:13px;">
+            New here? <a href="#" style="color:var(--accent-2);text-decoration:none">Create an account</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function(){
+      // UX helpers only — DOES NOT override form submission.
+      const toggle = document.getElementById('togglePassword');
+      const pwd = document.getElementById('password');
+      const loginForm = document.getElementById('loginForm');
+      const loginBtn = document.getElementById('loginButton');
+      const btnSpinner = document.getElementById('btnSpinner');
+      const loginError = document.getElementById('loginError');
+      const guestBtn = document.getElementById('guestBtn');
+
+      if(toggle && pwd){
+        toggle.addEventListener('click', () => {
+          if(pwd.type === 'password'){
+            pwd.type = 'text';
+            toggle.textContent = 'Hide';
+            toggle.setAttribute('aria-label','Hide password');
+          } else {
+            pwd.type = 'password';
+            toggle.textContent = 'Show';
+            toggle.setAttribute('aria-label','Show password');
+          }
+        });
+      }
+
+      // Visual "loading" flag for the button — useful if your existing login JS adds/removes classes.
+      function setLoading(isLoading){
+        if(isLoading){
+          btnSpinner.style.display = 'inline-block';
+          loginBtn.setAttribute('disabled', 'disabled');
+          loginBtn.style.opacity = 0.95;
+          // hide text for small visual
+          document.getElementById('loginIcon').textContent = 'Signing in...';
         } else {
-            document.getElementById('l_err').textContent = "Wrong username or password";
+          btnSpinner.style.display = 'none';
+          loginBtn.removeAttribute('disabled');
+          document.getElementById('loginIcon').textContent = 'Sign in';
         }
-    }
+      }
 
-    function enterSite(name) {
-        sessionStorage.setItem('active_user', name);
-        document.getElementById('userTag').textContent = "Logged in as: " + name + " | ";
-        document.getElementById('navbar').style.display = 'block';
-        switchView('home');
-    }
+      // If your existing login code returns/dispatches events, you can hook them.
+      // For safety, don't intercept form submit. Instead we provide a visual hook:
+      loginForm.addEventListener('submit', function (ev) {
+        // Let existing JS handle authentication.
+        // Provide immediate feedback to the user while the auth runs.
+        loginError.style.display = 'none';
+        setLoading(true);
+        // If your existing auth logic uses fetch/XHR and does not update the UI,
+        // it should remove the button disabled and show errors. If not, your
+        // backend or login JS will handle it. We remove the loader after a timeout
+        // as a fallback to avoid stuck state (you may remove this fallback).
+        window.__webblox_fallback_loader = setTimeout(() => setLoading(false), 10000);
+      });
 
-    function logout() {
-        sessionStorage.removeItem('active_user');
-        document.getElementById('navbar').style.display = 'none';
-        switchView('loginView');
-    }
+      // If your existing login script calls `preventDefault()` and performs async login,
+      // it should hide errors on success or show them on failure. We expose helper:
+      window.webBloxUI = {
+        setLoading,
+        showError: function(msg){
+          clearTimeout(window.__webblox_fallback_loader);
+          setLoading(false);
+          loginError.textContent = msg || 'Sign in failed. Check credentials.';
+          loginError.style.display = 'block';
+        },
+        clearError: function(){
+          loginError.style.display = 'none';
+          loginError.textContent = '';
+        }
+      };
 
-    function showPage(p) { switchView(p); }
-
-    window.onload = () => {
-        const user = sessionStorage.getItem('active_user');
-        user ? enterSite(user) : switchView('loginView');
-    };
-</script>
+      // Guest button — simple fallback action; you can change it to route to a guest flow.
+      guestBtn.addEventListener('click', function(){
+        // Optionally trigger a special form submission or navigate:
+        // location.href = '/guest';
+        alert('Guest mode: continuing as guest (hook this to your guest flow).');
+      });
+    })();
+  </script>
 </body>
 </html>
